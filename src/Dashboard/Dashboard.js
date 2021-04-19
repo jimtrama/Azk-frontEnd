@@ -80,7 +80,7 @@ const useStylesDrawer = makeStyles((theme) => ({
         }),
         marginLeft: -drawerWidth,
     },
-   
+
 }));
 
 const drawerWidth = 240;
@@ -105,7 +105,7 @@ function CreateExpenseModal() {
     const [open, setOpen] = useState(false);
     const [projects, setProjects] = useState([]);
     const [nameAlert, setNameAlert] = useState(false);
-    
+
     useEffect(() => {
         async function run() {
             var requestOptions = {
@@ -115,7 +115,7 @@ function CreateExpenseModal() {
 
             let res = await fetch(process.env.REACT_APP_BASE_URL + "/projects", requestOptions);
             setProjects(await res.json());
-            
+
         }
         run();
     }, [])
@@ -177,12 +177,12 @@ function CreateExpenseModal() {
 
         let res = await fetch(process.env.REACT_APP_BASE_URL + "/newexpense", requestOptions);
         let data = await res.json();
-        if(data.error=="name exists"){
+        if (data.error == "name exists") {
             setNameAlert(true);
-        }else{
+        } else {
             window.location.reload();
         }
-        
+
 
     }
     return (
@@ -244,7 +244,7 @@ function CreateExpenseModal() {
 
                         <SelectProject />
                         {
-                            nameAlert?<span style={{color:"red"}}>Name Already Exists</span>:<></>
+                            nameAlert ? <span style={{ color: "red" }}>Name Already Exists</span> : <></>
                         }
                         <button onClick={createBtnClicked}>Create Expense</button>
                         <p id="transition-modal-description">Expense Creation</p>
@@ -455,7 +455,7 @@ function Dashboard({ history }) {
     const [loadedDatafromDb, setLoadedDatafromDb] = useState(false);
     const dispatch = useDispatch();
     const [amounts, setLaodAmounts] = useState([]);
-    const [avatar,setAvatar]=useState(null);
+    const [avatar, setAvatar] = useState(null);
     useEffect(() => {
 
         console.log("g");
@@ -482,7 +482,7 @@ function Dashboard({ history }) {
             };
             let resAvatar = await fetch(process.env.REACT_APP_BASE_URL + "/userimg", requestOptions);
             let dataAvatar = new Uint8Array(await resAvatar.arrayBuffer());
-            
+
             setAvatar(URL.createObjectURL(new Blob([dataAvatar], { type: 'image/png' })));
             setExpensesFromDb(data.reverse());
             setLaodAmounts(dataAmount);
@@ -520,7 +520,7 @@ function Dashboard({ history }) {
         setOpen(false);
     };
     return (
-        
+
         <div className={classes.root}>
             <CssBaseline />
             <AppBar
@@ -542,8 +542,8 @@ function Dashboard({ history }) {
                     <Typography variant="h6" noWrap>
                         Dashboard
                     </Typography>
-                    <div style={{marginLeft:"auto",marginRight:"auto"}}>
-                        <img style={{height:"100px"}} src={Image}></img>
+                    <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+                        <img style={{ height: "100px" }} src={Image}></img>
                     </div>
                     <div className="headerContainer">
                         <span >{user.username}</span>
@@ -609,7 +609,7 @@ function Dashboard({ history }) {
                 {!expensesFromDb.some(v => v.name == undefined ? true : false) &&
                     expensesFromDb.map((expense) => {
                         let amountForexpense = 0;
-                        
+
                         amounts.forEach(expenseA => {
                             if (expenseA.id === expense._id) {
                                 amountForexpense = expenseA.amount;
@@ -640,7 +640,7 @@ function Dashboard({ history }) {
 
                             })
                         }
-                       
+
                         return (<ExpenseComp expense={expense} filesForTwo={filesForTwo} filesForOne={filesForOne} amount={amountForexpense} />)
                     })
                 }
@@ -648,7 +648,7 @@ function Dashboard({ history }) {
 
             </main>
         </div>
-        
+
 
 
     );
