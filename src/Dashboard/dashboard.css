@@ -231,7 +231,7 @@
 .expenseHeader {
     font-size: 1.3rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
@@ -239,7 +239,9 @@
 
 .expenseAmount {}
 
-.expenseDate {}
+.expenseDate {
+    margin-right: 8px;
+}
 
 .deleteButton {
     margin-top: 10px;
@@ -313,4 +315,40 @@
     margin-bottom: 20px;
     font-size: 1.1rem;
     padding-left: 10px;
+}
+
+.dasBtnCreate {
+    font-size: 1rem !important;
+    height: 50px !important;
+    margin-right: 10px !important;
+}
+
+.editExpenseBtnAndAdd {
+    background-color: #3f51b5;
+    color: white;
+    padding: 7px;
+    font-weight: bolder;
+    font-size: 0.9;
+    border-radius: 6px;
+    width: 20%;
+    height: 35px;
+    font-style: italic;
+}
+
+.deleteExpenseBtn {
+    background-color: #FA4949;
+    color: white;
+    padding: 7px;
+    font-weight: bolder;
+    font-size: 0.7;
+    border-radius: 6px;
+}
+
+.deleteExpenseTestInput {
+    border: 3px solid #FA4949;
+    border-radius: 4px;
+    text-align: center;
+    width: 30%;
+    height: 30px;
+    transition: ease all 1s;
 }

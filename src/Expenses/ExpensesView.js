@@ -20,7 +20,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-
+import GreenTick from './../Images/greentick.png'
+import RedTick from './../Images/redcross.png'
 
 import MainExpensContent from './MainExpensContent';
 
@@ -227,9 +228,9 @@ function Dashboard({ history }) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    
 
-    function SignsModal({ expenseid,expenseName }) {
+
+    function SignsModal({ expenseid, expenseName }) {
         const [openSignsModal, setOpenSignsModal] = useState(false);
         const [fileChoseStage, setFileChoseStage] = useState(-1)
         const [fileChoseSubStage, setFileChoseSubStage] = useState(0)
@@ -242,7 +243,7 @@ function Dashboard({ history }) {
         }
 
         async function searchFile() {
-            console.log(expenseid,expenseName);
+            console.log(expenseid, expenseName);
             if (fileChoseStage != -1) {
                 let res = await fetch(process.env.REACT_APP_BASE_URL + "/whosigned", { method: "GET", headers: { expenseid, "stage": fileChoseStage, "substage": fileChoseSubStage } })
                 let r = await res.json()
@@ -255,7 +256,7 @@ function Dashboard({ history }) {
 
         return (
             <>
-                <button onClick={() => { setOpenSignsModal(true) }}>Signs</button>
+                <button className="serarchFileBtnModal" onClick={() => { setOpenSignsModal(true) }}>Signs</button>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -268,70 +269,75 @@ function Dashboard({ history }) {
                     onClose={() => { setOpenSignsModal(false) }}
                 >
                     <div className="signsModalContainer">
-
-                        <FormControl variant="outlined" >
-                            <InputLabel id="demo-simple-select-outlined-label">Stage</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={fileChoseStage}
-                                onChange={ChangeChoise}
-                                label="Projects"
-                                name="projectsSearch"
-                            >
-                                <MenuItem value={-1}>None</MenuItem>
-                                <MenuItem value={0}>Πρωτογενές</MenuItem>
-                                <MenuItem value={1}>ΑνάληψΥπο</MenuItem>
-                                <MenuItem value={2}>Ανάθεση</MenuItem>
-                                <MenuItem value={3}>Σύμβαση</MenuItem>
-                                <MenuItem value={4}>Παραλαβη</MenuItem>
-                                <MenuItem value={5}>Ένταλμα</MenuItem>
-                                <MenuItem value={6}>Τιμολόγιο</MenuItem>
-                                <MenuItem value={7}>Τράπεζα</MenuItem>
-                                <MenuItem value={8}>Ασφαλιστική</MenuItem>
-                                <MenuItem value={9}>Φορολογική</MenuItem>
-
-                            </Select>
-                        </FormControl>
-                        {
-                            fileChoseStage >= 4 &&
+                        <div className="signsModalContainerFilters">
                             <FormControl variant="outlined" >
-                                <InputLabel id="demo-simple-select-outlined-label">SUB Stage</InputLabel>
+                                <InputLabel id="demo-simple-select-outlined-label">Stage</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-outlined-label"
                                     id="demo-simple-select-outlined"
-                                    value={fileChoseSubStage}
-                                    onChange={ChangeChoiseSub}
+                                    value={fileChoseStage}
+                                    onChange={ChangeChoise}
                                     label="Projects"
                                     name="projectsSearch"
                                 >
-
-                                    <MenuItem value={0}>1</MenuItem>
-                                    <MenuItem value={1}>2</MenuItem>
-                                    <MenuItem value={2}>3</MenuItem>
-                                    <MenuItem value={3}>4</MenuItem>
-                                    <MenuItem value={4}>5</MenuItem>
-                                    <MenuItem value={5}>6</MenuItem>
-                                    <MenuItem value={6}>7</MenuItem>
-                                    <MenuItem value={7}>8</MenuItem>
-                                    <MenuItem value={8}>9</MenuItem>
-                                    <MenuItem value={9}>10</MenuItem>
+                                    <MenuItem value={-1}>None</MenuItem>
+                                    <MenuItem value={0}>Πρωτογενές</MenuItem>
+                                    <MenuItem value={1}>ΑνάληψΥπο</MenuItem>
+                                    <MenuItem value={2}>Ανάθεση</MenuItem>
+                                    <MenuItem value={3}>Σύμβαση</MenuItem>
+                                    <MenuItem value={4}>Παραλαβη</MenuItem>
+                                    <MenuItem value={5}>Ένταλμα</MenuItem>
+                                    <MenuItem value={6}>Τιμολόγιο</MenuItem>
+                                    <MenuItem value={7}>Τράπεζα</MenuItem>
+                                    <MenuItem value={8}>Ασφαλιστική</MenuItem>
+                                    <MenuItem value={9}>Φορολογική</MenuItem>
 
                                 </Select>
                             </FormControl>
-                        }
-                        <button onClick={searchFile}>Search</button>
-                        {
-                            data.map(user => {
-                                console.log(user.signed);
-                                return (
-                                    <div>
-                                        <span style={{marginRight:"20px"}}>{user.username}</span>
-                                        <span>{user.signed?"Signed":"NOT Signed"}</span>
-                                    </div>
-                                )
-                            })
-                        }
+                            {
+                                fileChoseStage >= 4 &&
+                                <FormControl variant="outlined" >
+                                    <InputLabel id="demo-simple-select-outlined-label">SUB Stage</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        value={fileChoseSubStage}
+                                        onChange={ChangeChoiseSub}
+                                        label="Projects"
+                                        name="projectsSearch"
+                                    >
+
+                                        <MenuItem value={0}>1</MenuItem>
+                                        <MenuItem value={1}>2</MenuItem>
+                                        <MenuItem value={2}>3</MenuItem>
+                                        <MenuItem value={3}>4</MenuItem>
+                                        <MenuItem value={4}>5</MenuItem>
+                                        <MenuItem value={5}>6</MenuItem>
+                                        <MenuItem value={6}>7</MenuItem>
+                                        <MenuItem value={7}>8</MenuItem>
+                                        <MenuItem value={8}>9</MenuItem>
+                                        <MenuItem value={9}>10</MenuItem>
+
+                                    </Select>
+                                </FormControl>
+                            }
+                            <button className="serarchFileBtn" onClick={searchFile}>Search</button>
+                        </div>
+                        <div className="whoSigedModalContainerUsers">
+                            {
+                                data.map(user => {
+                                    console.log(user.signed);
+                                    return (
+                                        <div className="whoSignedRow">
+                                            <span className="nameUserSignedOrNot">{user.username}</span>
+                                            <div className="imgUsersSigned">
+                                                <img src={user.signed ? GreenTick : RedTick} />
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
 
                     </div>
                 </Modal>
@@ -457,8 +463,8 @@ function Dashboard({ history }) {
                                 amountForexpense = expenseA.amount;
                             }
                         })
-                        
-                        
+
+
                         let stageOneFile = expense.files[0];
                         let stageMoreFile = expense.files[1];
 
@@ -487,7 +493,7 @@ function Dashboard({ history }) {
                         console.log(expense._id);
                         return (<div className="expenseContainer">
                             <div className="expenseHeader">
-                                <SignsModal expenseid={expense._id} expenseName={expense.name}/>
+                                <SignsModal expenseid={expense._id} expenseName={expense.name} />
                                 <span className="expenseTitle">{expense.name}</span>
                                 <span className="expenseCae">{expense.cae}</span>
                                 <div>

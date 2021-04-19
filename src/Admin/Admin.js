@@ -34,15 +34,21 @@ function Admin({ history }) {
     async function createUser() {
         let username = document.getElementById('user').value
         let password = document.getElementById('pass').value
-
+        let nickname = document.getElementById('nick').value
+        let name = document.getElementById('name').value
+        let filedsToUpdate = [{ username }, { nickname }, { name }, { password }]
+        filedsToUpdate = filedsToUpdate.filter(filed => {
+            for (let key in filed) {
+                return (Boolean(filed[key]))
+            }
+        })
 
         if (username === undefined || username === "" || password === undefined || password === "" || file === undefined) {
             console.log("user data not valid");
             return;
         }
         var formdata = new FormData();
-        formdata.append("username", username);
-        formdata.append("password", password);
+        formdata.append("data", JSON.stringify(filedsToUpdate));
         formdata.append("file", file);
 
         var requestOptions = {
@@ -56,6 +62,8 @@ function Admin({ history }) {
         console.log(data);
         document.getElementById('user').value = "";
         document.getElementById('pass').value = "";
+        document.getElementById('nick').value = "";
+        document.getElementById('name').value = "";
     }
     const openModal = () => {
         setSign(null);
@@ -67,26 +75,26 @@ function Admin({ history }) {
         let nickname = document.getElementById('editusernickname').value
         let name = document.getElementById('edituser-name').value
         let password = document.getElementById('edituserpassword').value
-        let filedsToUpdate=[{username},{nickname},{name},{password}]
-        filedsToUpdate = filedsToUpdate.filter(filed=>{
-            for(let key in filed){
-                return(Boolean(filed[key]))
+        let filedsToUpdate = [{ username }, { nickname }, { name }, { password }]
+        filedsToUpdate = filedsToUpdate.filter(filed => {
+            for (let key in filed) {
+                return (Boolean(filed[key]))
             }
         })
         console.log(id);
         console.log(filedsToUpdate);
-        
-        
+
+
         var formdata = new FormData();
         formdata.append("id", id);
         formdata.append("data", JSON.stringify(filedsToUpdate));
-        if(sign){
-            formdata.append("sign",sign);
+        if (sign) {
+            formdata.append("sign", sign);
         }
-        if(avatar){
-            formdata.append("avatar",avatar);
+        if (avatar) {
+            formdata.append("avatar", avatar);
         }
-        
+
 
         var requestOptions = {
             method: 'POST',
@@ -97,7 +105,7 @@ function Admin({ history }) {
         let res = await fetch(process.env.REACT_APP_BASE_URL + "/edituser", requestOptions);
         let data = await res.json();
         console.log(data);
-        if(data.success===true){
+        if (data.success === true) {
             window.location.reload();
         }
     }
@@ -168,7 +176,7 @@ function Admin({ history }) {
                                 <div class="wrap-input100 validate-input" style={{ marginRight: "10px" }} data-validate="Enter username">
                                     <div style={{ display: "flex" }} >
                                         <AccessibilityNewIcon style={{ margin: " auto 0 ", marginLeft: "20px" }} />
-                                        <input class="input100" placeholder="Nickname" id="user" />
+                                        <input class="input100" placeholder="Nickname" id="nick" />
 
                                     </div>
                                     <span class="focus-input100"></span>
@@ -212,7 +220,7 @@ function Admin({ history }) {
                                     <span>Name:</span>
                                     <span>{user.name}</span>
                                 </div>
-                               
+
                                 <button onClick={() => { setId(user._id); setUsername(user.username); setNickname(user.nickname); setName(user.name); openModal() }}>Edit</button>
                             </div>
                         ))

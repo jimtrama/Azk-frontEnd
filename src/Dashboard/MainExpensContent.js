@@ -143,7 +143,7 @@ function MainExpensContent({ stageWithOneFileMain, stageWithMoreFilesMain, expen
             );
 
 
-            if (stage !== 1 && stage !== 4 && stage != 0) {
+            if (stage !== 1 && stage != 0) {
                 if (count < 1) {
                     setCheckedM({ ...checkedM, [i]: event.target.checked });
                 }
@@ -157,7 +157,7 @@ function MainExpensContent({ stageWithOneFileMain, stageWithMoreFilesMain, expen
 
                 }
             }
-            if (stage === 1 || stage === 0) {
+            if (stage === 1 || stage === 0 || stage !== 4) {
                 if (count < 2) {
                     setCheckedM({ ...checkedM, [i]: event.target.checked });
                 }
@@ -347,7 +347,7 @@ function MainExpensContent({ stageWithOneFileMain, stageWithMoreFilesMain, expen
                                         {
                                             users.lenght !== 0 ?
                                                 users.map((user, i) => {
-
+                                                    console.log(user);
                                                     return (
 
 
@@ -539,7 +539,7 @@ function MainExpensContent({ stageWithOneFileMain, stageWithMoreFilesMain, expen
 
     }
     function addRow() {
-        
+
         if (stageWithMoreFiles.length < 15) {
             setStageWithMoreFiles([...stageWithMoreFiles, [{}, {}, {}, {}, {}, {}]])
             setMoreLess(true);

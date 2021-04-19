@@ -154,11 +154,11 @@ function CreateExpenseModal() {
     async function createBtnClicked() {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        let name = document.getElementById('textboxCreateExpenseName').value;
+        let name = document.getElementById('textboxCreateExpenseName').value.trim();
         let cae = document.getElementById('textboxCreateExpenseCae').value;
         let amount = document.getElementById('textboxCreateExpenseAmount').value;
-        let afm = document.getElementById('textboxCreateExpenseAfm').value;
-        let provider = document.getElementById('textboxCreateExpenseProvider').value;
+        let afm = document.getElementById('textboxCreateExpenseAfm').value.trim();
+        let provider = document.getElementById('textboxCreateExpenseProvider').value.trim();
         var urlencoded = new URLSearchParams();
         urlencoded.append("name", name);
         urlencoded.append("cae", cae);
@@ -186,8 +186,8 @@ function CreateExpenseModal() {
 
     }
     return (
-        <div>
-            <button className="createExpenseBtn" onClick={handleOpen}>
+        <>
+            <button className="dasBtnCreate serarchFileBtnModal " onClick={handleOpen}>
                 Create New Expense
             </button>
             <Modal
@@ -251,7 +251,7 @@ function CreateExpenseModal() {
                     </div>
                 </Fade>
             </Modal>
-        </div>
+        </>
     );
 }
 
@@ -278,11 +278,11 @@ function EditExpenseModal({ expense }) {
     }, [openEdit])
     if (loadedPage) {
 
-        document.getElementById('textboxCreateExpenseNameEdit').value = expense.name != undefined ? expense.name : '';
-        document.getElementById('textboxCreateExpenseCaeEdit').value = expense.cae != undefined ? expense.cae : '';
-        document.getElementById('textboxCreateExpenseAmountEdit').value = expense.amount != undefined ? expense.amount : '';
-        document.getElementById('textboxCreateExpenseProviderEdit').value = expense.provider != undefined ? expense.provider : '';
-        document.getElementById('textboxCreateExpenseAfmEdit').value = expense.afm != undefined ? expense.afm : '';
+
+        document.getElementById('textboxCreateExpenseCaeEdit').value = expense.cae ? expense.cae : '';
+        document.getElementById('textboxCreateExpenseAmountEdit').value = expense.amount ? expense.amount : '';
+        document.getElementById('textboxCreateExpenseProviderEdit').value = expense.provider ? expense.provider.trim() : '';
+        document.getElementById('textboxCreateExpenseAfmEdit').value = expense.afm ? expense.afm.trim() : '';
         setProject(expense.project)
         setLoadedPage(false);
 
@@ -319,8 +319,52 @@ function EditExpenseModal({ expense }) {
             </FormControl>
         )
     }
+    async function deleteExpense() {
+        console.log(expense);
+        let typed = document.getElementById("eleteExpenseTestInputId").value;
+        if (typed.trim() != expense.name.trim()) {
+            return;
+        }
+        let filesIds = [];
+        if (expense.files[0]) {
+            for (let file of expense.files[0]) {
+                if (!filesIds.includes(file.fileId)) {
+                    filesIds.push(file.fileId)
+                }
+            }
+        }
+        if (expense.files[1]) {
+            for (let filearray of expense.files[1]) {
+                for (let file of filearray) {
+                    if (!filesIds.includes(file.fileId)) {
+                        filesIds.push(file.fileId)
+                    }
+                }
+
+            }
+        }
+
+
+        let urlencoded = new URLSearchParams();
+        urlencoded.append("id", expense._id)
+        urlencoded.append("data", JSON.stringify(filesIds))
+        urlencoded.append("name", expense.name)
+        urlencoded.append("date", expense.createdAt)
+        let reqOptions = {
+            method: "POST",
+            body: urlencoded
+
+        }
+        let res = await fetch(process.env.REACT_APP_BASE_URL + "/delexpense", reqOptions);
+        let data = await res.json();
+        if (data.ok) {
+            window.location.reload();
+        }
+        console.log("Deleted");
+    }
+
     async function editBtnClicked() {
-        var myHeaders = new Headers();
+        let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         let name = document.getElementById('textboxCreateExpenseNameEdit').value;
         let cae = document.getElementById('textboxCreateExpenseCaeEdit').value;
@@ -328,7 +372,7 @@ function EditExpenseModal({ expense }) {
         let provider = document.getElementById('textboxCreateExpenseProviderEdit').value;
         let afm = document.getElementById('textboxCreateExpenseAfmEdit').value;
 
-        var urlencoded = new URLSearchParams();
+        let urlencoded = new URLSearchParams();
         console.log(expense);
         urlencoded.append("name", name);
         urlencoded.append("cae", cae);
@@ -339,7 +383,7 @@ function EditExpenseModal({ expense }) {
         urlencoded.append("afm", afm);
         urlencoded.append("expId", expense._id);
 
-        var requestOptions = {
+        let requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: urlencoded,
@@ -371,13 +415,8 @@ function EditExpenseModal({ expense }) {
             >
                 <Fade in={openEdit}>
                     <div className='createExpenseModal'>
-                        <h2 id="transition-modal-title">Edit An Expense</h2>
-                        <div style={{ display: "flex" }}>
-                            <span style={{ width: "50%" }}>Name Of Expense:</span>
-                            <div style={{ width: '50%' }}>
-                                <input type="text" placeholder="Name Of Expense" id="textboxCreateExpenseNameEdit" />
-                            </div>
-                        </div>
+                        <h2 id="transition-modal-title">Editing "{expense.name}"</h2>
+
 
 
                         <div style={{ display: "flex" }}>
@@ -412,13 +451,15 @@ function EditExpenseModal({ expense }) {
                         </div>
 
                         <SelectProject />
-                        <button onClick={editBtnClicked}>Edit Expense</button>
-                        <p id="transition-modal-description">Expense Edit</p>
+                        <button className="editExpenseBtnAndAdd" onClick={editBtnClicked}>Edit Expense</button>
+                        <button className="deleteExpenseBtn" onClick={deleteExpense}>Delete Expense</button>
+                        <input placeholder="Enter Expense's name to delete" id="eleteExpenseTestInputId" className="deleteExpenseTestInput" />
                     </div>
                 </Fade>
             </Modal>
         </div>
     );
+
 }
 function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
 
@@ -429,7 +470,7 @@ function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
 
             <div className="expenseHeader">
                 <EditExpenseModal expense={expense} />
-                <span className="expenseTitle">{expense.name}</span>
+                <span className="expenseTitle marginleftheader">{expense.name}</span>
                 <span className="expenseCae">{expense.cae}</span>
                 <div>
                     <span className="expenseAmount">{amount}</span>
@@ -456,24 +497,29 @@ function Dashboard({ history }) {
     const dispatch = useDispatch();
     const [amounts, setLaodAmounts] = useState([]);
     const [avatar, setAvatar] = useState(null);
+    const [project, setProject] = useState("None")
+    const [projects, setProjects] = useState([])
+    const [expensesToShow, setExpensesToShow] = useState([])
+    const refresh = useForceUpdate();
     useEffect(() => {
 
         console.log("g");
         async function load() {
-            var requestOptions = {
+            let requestOptions = {
                 method: 'GET',
                 redirect: 'follow'
             };
             let res = await fetch(process.env.REACT_APP_BASE_URL + "/expenses", requestOptions);
             let data = await res.json();
 
-            var requestOptions = {
+            requestOptions = {
                 method: 'GET',
                 redirect: 'follow'
             };
             let resAmount = await fetch(process.env.REACT_APP_BASE_URL + "/fileamount", requestOptions);
             let dataAmount = await resAmount.json();
-            var requestOptions = {
+
+            requestOptions = {
                 method: 'GET',
                 headers: {
                     "avatar": encodeURIComponent(user.avatar, 'utf-8')
@@ -483,8 +529,18 @@ function Dashboard({ history }) {
             let resAvatar = await fetch(process.env.REACT_APP_BASE_URL + "/userimg", requestOptions);
             let dataAvatar = new Uint8Array(await resAvatar.arrayBuffer());
 
+
+            requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            let resPr = await fetch(process.env.REACT_APP_BASE_URL + "/projects", requestOptions);
+            let dataPr = await resPr.json()
+            setProjects(dataPr);
             setAvatar(URL.createObjectURL(new Blob([dataAvatar], { type: 'image/png' })));
             setExpensesFromDb(data.reverse());
+            setExpensesToShow(data)
             setLaodAmounts(dataAmount);
             setLoadedDatafromDb(true);
         }
@@ -496,7 +552,40 @@ function Dashboard({ history }) {
     }, [])
 
 
+    let projectSearchTemp = "None"
+    function Search(e) {
+        if (e.target.name == "projectsSearch") {
+            if (e.target.value) {
+                setProject(e.target.value);
+                projectSearchTemp = e.target.value;
 
+            }
+        }
+        let titleSearch = document.getElementById('expenseNameSearchD').value;
+        let caeSearch = document.getElementById('expenseCaeSearchD').value;
+        let partnerSearch = document.getElementById('expensePartnerSearchD').value;
+        let afmSearch = document.getElementById('expenseAfmSearchD').value;
+        let searchValues = [{ "name": titleSearch }, { "cae": caeSearch }, { "provider": partnerSearch }, { "afm": afmSearch }];
+
+        let temp = [];
+        for (let i = 0; i < expensesFromDb.length; i++) {
+            const expense = expensesFromDb[i];
+            if (projectSearchTemp && projectSearchTemp != "None") {
+
+                if (expense.name.includes(titleSearch) && expense.cae.includes(caeSearch) && expense.provider.includes(partnerSearch) && expense.afm.toString().includes(afmSearch) && expense.project.includes(projectSearchTemp))
+                    temp.push(expense)
+            } else {
+                if (expense.name.includes(titleSearch) && expense.cae.includes(caeSearch) && expense.provider.includes(partnerSearch) && expense.afm.toString().includes(afmSearch))
+                    temp.push(expense)
+            }
+
+        }
+
+        setExpensesToShow(temp.reverse());
+
+        refresh();
+
+    }
 
 
     function logout() {
@@ -605,9 +694,34 @@ function Dashboard({ history }) {
             >
 
                 <div className={classes.drawerHeader} />
-                <CreateExpenseModal />
-                {!expensesFromDb.some(v => v.name == undefined ? true : false) &&
-                    expensesFromDb.map((expense) => {
+                <div className="searchExpenseContainer">
+                    <CreateExpenseModal />
+                    <input className="searchBoxExpenses" placeholder="Expense Name ..." id="expenseNameSearchD" onChange={Search} />
+                    <input className="searchBoxExpenses" placeholder="Expense Cae ..." id="expenseCaeSearchD" onChange={Search} />
+                    <input className="searchBoxExpenses" placeholder="Expense Partner ..." id="expensePartnerSearchD" onChange={Search} />
+                    <input className="searchBoxExpenses" placeholder="Expense Afm ..." id="expenseAfmSearchD" onChange={Search} />
+                    <FormControl variant="outlined" >
+                        <InputLabel id="demo-simple-select-outlined-label">Project</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="demo-simple-select-outlined"
+                            value={project}
+                            onChange={Search}
+                            label="Projects"
+                            name="projectsSearch"
+                        >
+                            <MenuItem name="ddddd" value="None">None</MenuItem>
+                            {
+
+                                projects.length > 0 ? projects.map(v => <MenuItem name="ddddd" value={v.name}>{v.name}</MenuItem>) : <></>
+                            }
+                        </Select>
+                    </FormControl>
+
+                </div>
+
+                {!expensesToShow.some(v => v.name == undefined ? true : false) &&
+                    expensesToShow.map((expense) => {
                         let amountForexpense = 0;
 
                         amounts.forEach(expenseA => {
@@ -641,7 +755,12 @@ function Dashboard({ history }) {
                             })
                         }
 
-                        return (<ExpenseComp expense={expense} filesForTwo={filesForTwo} filesForOne={filesForOne} amount={amountForexpense} />)
+                        return (
+
+                            <ExpenseComp expense={expense} filesForTwo={filesForTwo} filesForOne={filesForOne} amount={amountForexpense} />
+
+
+                        )
                     })
                 }
 
