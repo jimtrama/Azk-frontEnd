@@ -140,10 +140,10 @@ function Dashboard({ history }) {
             const expense = expensesFromDb[i];
             if (projectSearchTemp && projectSearchTemp != "None") {
 
-                if (expense.name.includes(titleSearch) && expense.cae.includes(caeSearch) && expense.provider.includes(partnerSearch) && expense.afm.toString().includes(afmSearch) && expense.project.includes(projectSearchTemp))
+                if (expense.name.toLocaleLowerCase().includes(titleSearch.toLocaleLowerCase()) && expense.cae.includes(caeSearch) && expense.provider.toLocaleLowerCase().includes(partnerSearch.toLocaleLowerCase()) && expense.afm.toString().includes(afmSearch) && expense.project.includes(projectSearchTemp))
                     temp.push(expense)
             } else {
-                if (expense.name.includes(titleSearch) && expense.cae.includes(caeSearch) && expense.provider.includes(partnerSearch) && expense.afm.toString().includes(afmSearch))
+                if (expense.name.toLocaleLowerCase().includes(titleSearch.toLocaleLowerCase()) && expense.cae.includes(caeSearch) && expense.provider.toLocaleLowerCase().includes(partnerSearch.toLocaleLowerCase()) && expense.afm.toString().includes(afmSearch))
                     temp.push(expense)
             }
 
@@ -498,7 +498,7 @@ function Dashboard({ history }) {
                                 <span className="expenseCae">{expense.cae}</span>
                                 <div>
                                     <span className="expenseAmount">{amountForexpense}</span>
-                                    <span className="expenseAmount">/{expense.amount + "$"}</span>
+                                    <span className="expenseAmount">/{expense.amount + "€"}</span>
                                 </div>
                                 <span className="expenseAmount">{expense.provider}</span>
                                 <span className="expenseAmount">{expense.afm}</span>

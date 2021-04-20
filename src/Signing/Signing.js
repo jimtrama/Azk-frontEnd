@@ -75,9 +75,9 @@ const useStylesDrawer = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: -drawerWidth,
-        
+
     }
-    
+
 }));
 
 const drawerWidth = 240;
@@ -110,7 +110,7 @@ function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
                 <span className="expenseCae">{expense.cae}</span>
                 <div>
                     <span className="expenseAmount">{amount}</span>
-                    <span className="expenseAmount">/{expense.amount + "$"}</span>
+                    <span className="expenseAmount">/{expense.amount + "€"}</span>
                 </div>
                 <span className="expenseAmount">{expense.provider}</span>
                 <span className="expenseAmount">{expense.afm}</span>
@@ -135,7 +135,7 @@ function Dashboard({ history }) {
     const [avatar, setAvatar] = useState(null);
     useEffect(() => {
 
-        
+
         async function load() {
             let myHeaders = new Headers();
             myHeaders.append('name', user.username);
@@ -163,7 +163,7 @@ function Dashboard({ history }) {
             };
             let resAvatar = await fetch(process.env.REACT_APP_BASE_URL + "/userimg", requestOptions);
             let dataAvatar = new Uint8Array(await resAvatar.arrayBuffer());
-            
+
             setAvatar(URL.createObjectURL(new Blob([dataAvatar], { type: 'image/png' })));
             setExpensesFromDb(data.reverse());
             setLaodAmounts(dataAmount);
@@ -201,7 +201,7 @@ function Dashboard({ history }) {
         setOpen(false);
     };
     return (
-        
+
         <div className={classes.root}>
             <CssBaseline />
             <AppBar
@@ -223,10 +223,10 @@ function Dashboard({ history }) {
                     <Typography variant="h6" noWrap>
                         Signing
                     </Typography>
-                    <div style={{marginLeft:"auto",marginRight:"auto"}}>
-                        <img style={{height:"100px"}} src={Image}></img>
+                    <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+                        <img style={{ height: "100px" }} src={Image}></img>
                     </div>
-                    
+
                     <div className="headerContainer">
                         <span >{user.username}</span>
 
@@ -292,7 +292,7 @@ function Dashboard({ history }) {
                     expensesFromDb.length == 0 ? (<span style={{ fontSize: "1.5rem" }}>No Files to sign for now.</span>) :
                     expensesFromDb.map((expense) => {
                         let amountForexpense = 0;
-                        
+
                         amounts.forEach(expenseA => {
                             if (expenseA.id === expense._id) {
                                 amountForexpense = expenseA.amount;
@@ -323,16 +323,16 @@ function Dashboard({ history }) {
 
                             })
                         }
-                        
+
                         return (<ExpenseComp expense={expense} filesForTwo={filesForTwo} filesForOne={filesForOne} amount={amountForexpense} />)
                     })
                 }
 
 
             </main>
-            
+
         </div>
-        
+
 
 
     );

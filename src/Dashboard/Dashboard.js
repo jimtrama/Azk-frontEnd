@@ -366,7 +366,7 @@ function EditExpenseModal({ expense }) {
     async function editBtnClicked() {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        let name = document.getElementById('textboxCreateExpenseNameEdit').value;
+
         let cae = document.getElementById('textboxCreateExpenseCaeEdit').value;
         let amount = document.getElementById('textboxCreateExpenseAmountEdit').value;
         let provider = document.getElementById('textboxCreateExpenseProviderEdit').value;
@@ -374,7 +374,7 @@ function EditExpenseModal({ expense }) {
 
         let urlencoded = new URLSearchParams();
         console.log(expense);
-        urlencoded.append("name", name);
+
         urlencoded.append("cae", cae);
         urlencoded.append("active", 1);
         urlencoded.append("amount", amount);
@@ -463,6 +463,7 @@ function EditExpenseModal({ expense }) {
 }
 function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
 
+    console.log(expense);
 
 
     return (
@@ -474,7 +475,7 @@ function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
                 <span className="expenseCae">{expense.cae}</span>
                 <div>
                     <span className="expenseAmount">{amount}</span>
-                    <span className="expenseAmount">/{expense.amount + "$"}</span>
+                    <span className="expenseAmount">/{expense.amount + "€"}</span>
                 </div>
                 <span className="expenseAmount">{expense.provider}</span>
                 <span className="expenseAmount">{expense.afm}</span>
@@ -572,10 +573,10 @@ function Dashboard({ history }) {
             const expense = expensesFromDb[i];
             if (projectSearchTemp && projectSearchTemp != "None") {
 
-                if (expense.name.includes(titleSearch) && expense.cae.includes(caeSearch) && expense.provider.includes(partnerSearch) && expense.afm.toString().includes(afmSearch) && expense.project.includes(projectSearchTemp))
+                if (expense.name.toLocaleLowerCase().includes(titleSearch.toLocaleLowerCase()) && expense.cae.includes(caeSearch) && expense.provider.toLocaleLowerCase().includes(partnerSearch.toLocaleLowerCase()) && expense.afm.toString().includes(afmSearch) && expense.project.includes(projectSearchTemp))
                     temp.push(expense)
             } else {
-                if (expense.name.includes(titleSearch) && expense.cae.includes(caeSearch) && expense.provider.includes(partnerSearch) && expense.afm.toString().includes(afmSearch))
+                if (expense.name.toLocaleLowerCase().includes(titleSearch.toLocaleLowerCase()) && expense.cae.includes(caeSearch) && expense.provider.toLocaleLowerCase().includes(partnerSearch.toLocaleLowerCase()) && expense.afm.toString().includes(afmSearch))
                     temp.push(expense)
             }
 

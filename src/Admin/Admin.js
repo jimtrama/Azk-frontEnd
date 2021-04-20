@@ -71,7 +71,7 @@ function Admin({ history }) {
         setOpen(true);
     }
     async function edit() {
-        let username = document.getElementById('edituserusername').value
+
         let nickname = document.getElementById('editusernickname').value
         let name = document.getElementById('edituser-name').value
         let password = document.getElementById('edituserpassword').value

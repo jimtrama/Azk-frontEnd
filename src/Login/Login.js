@@ -8,15 +8,15 @@ function Login({ history }) {
     const [loading, setLoading] = useState(false);
     const [userExists, setUserExists] = useState(false);
     const dispach = useDispatch();
-    async function performLogin() {
-        
+    async function performLogin(e) {
+
         setLoading(true);
         let username = document.getElementById('usernametxt').value;
         let password = document.getElementById('passwordtxt').value;
         let headers = new Headers();
         headers.append("username", username)
         headers.append("password", password)
-        
+
 
         var requestOptions = {
             method: 'GET',
@@ -41,12 +41,16 @@ function Login({ history }) {
             console.log("USER doesn't Exists");
         }
     }
-
+    document.addEventListener('keypress', (e) => {
+        if (e.key == 'Enter') {
+            performLogin();
+        }
+    })
     return (
 
         <div class="limiter">
             <div class="container-login100" >
-                <div class="wrap-login100">
+                <div class="wrap-login100" id="loginform">
                     <span class="login100-form-title">
                         Account Login
 				    </span>
@@ -69,7 +73,7 @@ function Login({ history }) {
                         </div>
 
                         <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" id="loginbtn" onClick={ performLogin }>Log In</button>
+                            <button class="login100-form-btn" id="loginbtn" onClick={performLogin}>Log In</button>
                         </div>
 
                     </div>
