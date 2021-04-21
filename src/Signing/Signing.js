@@ -166,7 +166,7 @@ function Dashboard({ history }) {
 
             setAvatar(URL.createObjectURL(new Blob([dataAvatar], { type: 'image/png' })));
             setExpensesFromDb(data.reverse());
-            setLaodAmounts(dataAmount);
+            setLaodAmounts(dataAmount.data);
             setLoadedDatafromDb(true);
         }
 

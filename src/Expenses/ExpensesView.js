@@ -194,7 +194,7 @@ function Dashboard({ history }) {
 
             setExpensesFromDb(data);
             setExpensesToShow(data.reverse());
-            setLaodAmounts(dataAmount);
+            setLaodAmounts(dataAmount.data);
             setLoadedDatafromDb(true);
         }
 

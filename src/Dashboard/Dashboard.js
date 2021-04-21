@@ -461,31 +461,7 @@ function EditExpenseModal({ expense }) {
     );
 
 }
-function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
 
-    console.log(expense);
-
-
-    return (
-        <div className="expenseContainer">
-
-            <div className="expenseHeader">
-                <EditExpenseModal expense={expense} />
-                <span className="expenseTitle marginleftheader">{expense.name}</span>
-                <span className="expenseCae">{expense.cae}</span>
-                <div>
-                    <span className="expenseAmount">{amount}</span>
-                    <span className="expenseAmount">/{expense.amount + "€"}</span>
-                </div>
-                <span className="expenseAmount">{expense.provider}</span>
-                <span className="expenseAmount">{expense.afm}</span>
-                <span className="expenseAmount">{expense.project}</span>
-                <span className="expenseDate">{expense.createdAt.split("T")[0].split("-").map((v, i, a) => i === a.length - 1 ? a[0] : a[2 - i] + "/")}</span>
-            </div>
-            <MainExpensContent expense={expense} stageWithOneFileMain={filesForOne} stageWithMoreFilesMain={filesForTwo} expenseId={expense._id} />
-        </div>
-    )
-}
 
 
 
@@ -542,7 +518,7 @@ function Dashboard({ history }) {
             setAvatar(URL.createObjectURL(new Blob([dataAvatar], { type: 'image/png' })));
             setExpensesFromDb(data.reverse());
             setExpensesToShow(data)
-            setLaodAmounts(dataAmount);
+            setLaodAmounts(dataAmount.data);
             setLoadedDatafromDb(true);
         }
 
@@ -609,6 +585,32 @@ function Dashboard({ history }) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    function ExpenseComp({ expense, filesForOne, filesForTwo, amount }) {
+
+        console.log(expense);
+
+
+        return (
+            <div className="expenseContainer">
+
+                <div className="expenseHeader">
+                    <EditExpenseModal expense={expense} />
+                    <span className="expenseTitle marginleftheader">{expense.name}</span>
+                    <span className="expenseCae">{expense.cae}</span>
+                    <div>
+                        <span className="expenseAmount">{amount}</span>
+                        <span className="expenseAmount">/{expense.amount + "€"}</span>
+                    </div>
+                    <span className="expenseAmount">{expense.provider}</span>
+                    <span className="expenseAmount">{expense.afm}</span>
+                    <span className="expenseAmount">{expense.project}</span>
+                    <span className="expenseDate">{expense.createdAt.split("T")[0].split("-").map((v, i, a) => i === a.length - 1 ? a[0] : a[2 - i] + "/")}</span>
+                </div>
+                <MainExpensContent expense={expense} stageWithOneFileMain={filesForOne} stageWithMoreFilesMain={filesForTwo} expenseId={expense._id} />
+            </div>
+        )
+    }
     return (
 
         <div className={classes.root}>
