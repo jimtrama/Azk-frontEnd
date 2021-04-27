@@ -1,4 +1,4 @@
-# This repo is the front-end of a file-managment (cloud) 
+# This repo is the front-end of a file-managment (cloud) System
 - docs in the server signing opption in a pre-defined place in the documens whith the click of a checkbox 
 - reviewing files signed for an expense 
 - check remaining signs
