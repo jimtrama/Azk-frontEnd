@@ -1,3 +1,12 @@
+# This repo is the front-end of a file-managment (cloud) 
+- docs in the server signing opption in a pre-defined place in the documens whith the click of a checkbox 
+- reviewing files signed for an expense 
+- check remaining signs
+# Back-end Repo for this project 
+- [@jimtrama/Azk_Backend](https://github.com/jimtrama/Azk_Backend)
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
