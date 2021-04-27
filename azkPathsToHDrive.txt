@@ -1,0 +1,8 @@
+######routes users.js:5
+let pathToDir = "C:/Signs";
+let pathToDirAvatar = "C:/Avatars";
+
+
+####routes files.js:7
+const pathToDir = "C:/Expenses";
+
